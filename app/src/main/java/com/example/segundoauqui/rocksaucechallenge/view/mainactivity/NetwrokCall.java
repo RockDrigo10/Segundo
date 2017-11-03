@@ -18,7 +18,7 @@ public class NetwrokCall {
 
     public static final String BASE_SCHEMA_WND = "http";
     public static final String BASE_URL = "http://www.reddit.com/";
-    public static final String PATH = "r/all/";
+    public static final String PATH = "r/all/.json";
     public static final String EXT_WND = ".json";
 
 

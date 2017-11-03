@@ -2,12 +2,12 @@ package com.example.segundoauqui.rocksaucechallenge.view.mainactivity;
 
 import android.content.Context;
 
-
-import com.example.segundoauqui.rocksaucechallenge.model.Data_;
+import com.example.segundoauqui.rocksaucechallenge.model.Child;
 import com.example.segundoauqui.rocksaucechallenge.model.Example;
 
 import java.io.IOException;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -44,7 +44,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         getAllPost.enqueue(new retrofit2.Callback<Example>() {
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
-                List<Data_> user = (List<Data_>) response.body().getData();
+                List<Child> user = response.body().getData().getChildren();
                 try{
                     view.getAllPostList(user);
                 } catch (IOException e) {

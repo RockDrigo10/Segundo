@@ -1,36 +1,33 @@
 package com.example.segundoauqui.rocksaucechallenge.view.mainactivity;
 
 import android.content.Intent;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.example.segundoauqui.rocksaucechallenge.BaseView;
 import com.example.segundoauqui.rocksaucechallenge.R;
 import com.example.segundoauqui.rocksaucechallenge.injection.mainactivity.DaggerMainActivityComponent;
-import com.example.segundoauqui.rocksaucechallenge.model.Data;
-import com.example.segundoauqui.rocksaucechallenge.model.Data_;
+import com.example.segundoauqui.rocksaucechallenge.model.Child;
 import com.example.segundoauqui.rocksaucechallenge.model.Example;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity implements MainActivityContract.View {
 
-
-    MainActivityPresenter activityPresenter;
+    @Inject
+    MainActivityPresenter presenter;
     ArrayList<Example>  example = new ArrayList<>();
-    ArrayList<Data_> data = new ArrayList<>();
+    ArrayList<Child> data = new ArrayList<>();
     ArrayList<CategoriesAdapter> categoriesAdapters = new ArrayList<>();
     LinearLayoutManager layoutManager;
     RecyclerView.ItemAnimator itemAnimator;
     RecyclerView recycler;
-    private SwipeRefreshLayout activityMainSwipeRefreshLayout;
 
 
     @Override
@@ -39,9 +36,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         setContentView(R.layout.activity_main);
 
         setUpDagger();
-
+        presenter = new MainActivityPresenter();
+        presenter.attachView(this);
         layoutManager = new LinearLayoutManager(getApplicationContext());
         itemAnimator = new DefaultItemAnimator();
+        recycler = (RecyclerView) findViewById(R.id.rvDays);
         recycler.setLayoutManager(layoutManager);
         recycler.setItemAnimator(itemAnimator);
         recycler.setHasFixedSize(true);
@@ -49,17 +48,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         recycler.setDrawingCacheEnabled(true);
         recycler.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
+        presenter.restCall();
+
     }
 
 
     @Override
-    public void sendInfo(ArrayList<Data_> value) {
+    public void sendInfo(ArrayList<Child> value) {
         CategoriesAdapter firstAdapter = new CategoriesAdapter(value);
         recycler.setAdapter(firstAdapter);
         firstAdapter.notifyDataSetChanged();
 
         this.data= value;
-        activityMainSwipeRefreshLayout.setRefreshing(false);
     }
 
     public void setUpDagger(){
@@ -88,8 +88,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     @Override
-    public void getAllPostList(List<Data_> getAllPostList) {
+    public void getAllPostList(List<Child> getAllPostList) {
+        CategoriesAdapter firstAdapter = new CategoriesAdapter((ArrayList<Child>) getAllPostList);
+        recycler.setAdapter(firstAdapter);
+        firstAdapter.notifyDataSetChanged();
 
+        this.data= (ArrayList<Child>) getAllPostList;
     }
 
 

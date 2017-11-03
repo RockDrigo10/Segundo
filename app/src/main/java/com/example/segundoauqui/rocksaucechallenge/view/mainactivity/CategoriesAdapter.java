@@ -15,13 +15,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.segundoauqui.rocksaucechallenge.R;
-import com.example.segundoauqui.rocksaucechallenge.model.Data;
-import com.example.segundoauqui.rocksaucechallenge.model.Data_;
+import com.example.segundoauqui.rocksaucechallenge.model.Child;
 
 import java.util.ArrayList;
-import java.util.Date;
-
-import javax.xml.transform.Result;
 
 /**
  * Created by segundoauqui on 11/3/17.
@@ -34,10 +30,10 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     private static final String TAG = "RetrofitAdapter";
 
 
-    ArrayList<Data_> categoriesList = new ArrayList<>();
+    ArrayList<Child> categoriesList = new ArrayList<>();
     Context context;
 
-    public CategoriesAdapter(ArrayList<Data_> categoriesList) {
+    public CategoriesAdapter(ArrayList<Child> categoriesList) {
         this.categoriesList = categoriesList;
 
     }
@@ -77,13 +73,13 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     @Override
     public void onBindViewHolder(CategoriesAdapter.ViewHolder holder, int position) {
 
-        final Data_ retro = categoriesList.get(position);
+        final Child retro = categoriesList.get(position);
 
-        holder.tvText1.setText(retro.getAuthor());
-        holder.tvText2.setText(retro.getDomain());
-        holder.tvText3.setText(retro.getId());
+        holder.tvText1.setText(retro.getData().getAuthor());
+        holder.tvText2.setText(retro.getData().getDomain());
+        holder.tvText3.setText(retro.getData().getId());
 
-        Glide.with(holder.itemView.getContext()).load(retro.getIsVideo()).into(holder.ivImage);
+        Glide.with(holder.itemView.getContext()).load(retro.getData().getThumbnail()).into(holder.ivImage);
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(final View view) {
@@ -95,7 +91,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
                                 final Dialog dialogCustom = new Dialog(view.getContext());
                                 dialogCustom.setContentView(R.layout.smallpix);
                                 ImageView largePix = (ImageView) dialogCustom.findViewById(R.id.ivSmall);
-                                Glide.with(view.getContext()).load(retro.getIsVideo()).into(largePix);
+                                Glide.with(view.getContext()).load(retro.getData().getThumbnail()).into(largePix);
                                 dialogCustom.show();
                                 Toast.makeText(context, "Showing Small Image", Toast.LENGTH_SHORT).show();
 
