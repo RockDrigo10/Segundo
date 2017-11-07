@@ -56,14 +56,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
             @Override
             public void onRefresh() {
                 activityMainSwipeRefreshLayout.setRefreshing(true);
-                if(searchView.getQuery().toString()== "")
-                    presenter.restCall("funny/");
+                if(searchView.getQuery().toString().equals(""))
+                    presenter.restCall("all/");
                 else
-                    presenter.restCall(searchView.getQuery().toString());
+                    presenter.restCall(searchView.getQuery().toString()+"/");
             }
         });
-        presenter.restCall("funny/");
+        presenter.restCall("all/");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                presenter.restCall(query+"/");
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
     @Override

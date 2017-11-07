@@ -26,7 +26,6 @@ import java.util.ArrayList;
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
 
 
-
     private static final String TAG = "RetrofitAdapter";
 
 
@@ -74,33 +73,33 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     public void onBindViewHolder(CategoriesAdapter.ViewHolder holder, int position) {
 
         final Child retro = categoriesList.get(position);
+        if (retro.getData() != null) {
+            holder.tvText1.setText(retro.getData().getAuthor());
+            holder.tvText2.setText(retro.getData().getTitle());
+            holder.tvText3.setText(retro.getData().getSubreddit());
 
-        holder.tvText1.setText(retro.getData().getAuthor());
-        holder.tvText2.setText(retro.getData().getDomain());
-        holder.tvText3.setText(retro.getData().getId());
+            Glide.with(holder.itemView.getContext()).load(retro.getData().getThumbnail()).into(holder.ivImage);
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(final View view) {
+                    new AlertDialog.Builder(view.getContext())
+                            .setTitle("Select One From The Options")
+                            .setPositiveButton("Show Full Image", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    final Dialog dialogCustom = new Dialog(view.getContext());
+                                    dialogCustom.setContentView(R.layout.smallpix);
+                                    ImageView largePix = (ImageView) dialogCustom.findViewById(R.id.ivSmall);
+                                    Glide.with(view.getContext()).load(retro.getData().getThumbnail()).into(largePix);
+                                    dialogCustom.show();
+                                    Toast.makeText(context, "Showing Small Image", Toast.LENGTH_SHORT).show();
 
-        Glide.with(holder.itemView.getContext()).load(retro.getData().getThumbnail()).into(holder.ivImage);
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(final View view) {
-                new AlertDialog.Builder(view.getContext())
-                        .setTitle("Select One From The Options")
-                        .setPositiveButton("Show Full Image", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                final Dialog dialogCustom = new Dialog(view.getContext());
-                                dialogCustom.setContentView(R.layout.smallpix);
-                                ImageView largePix = (ImageView) dialogCustom.findViewById(R.id.ivSmall);
-                                Glide.with(view.getContext()).load(retro.getData().getThumbnail()).into(largePix);
-                                dialogCustom.show();
-                                Toast.makeText(context, "Showing Small Image", Toast.LENGTH_SHORT).show();
-
-                            }
-                        }).show();
-                return false;
-            }
-        });
-
+                                }
+                            }).show();
+                    return false;
+                }
+            });
+        }
 
     }
 

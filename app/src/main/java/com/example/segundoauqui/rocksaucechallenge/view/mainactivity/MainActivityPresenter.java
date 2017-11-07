@@ -10,8 +10,6 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 
-
-
 /**
  * Created by segundoauqui on 11/1/17.
  */
@@ -38,11 +36,13 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         getAllPost.enqueue(new retrofit2.Callback<Example>() {
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
-                List<Child> user = response.body().getData().getChildren();
-                try{
-                    view.getAllPostList(user);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (response.body() != null) {
+                    List<Child> user = response.body().getData().getChildren();
+                    try {
+                        view.getAllPostList(user);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
