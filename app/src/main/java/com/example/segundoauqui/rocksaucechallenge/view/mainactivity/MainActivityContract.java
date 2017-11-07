@@ -22,7 +22,7 @@ public interface MainActivityContract {
 
     interface Presenter extends BasePresenter<MainActivityContract.View>{
 
-        void restCall();
+        void restCall(String category);
     }
 
 

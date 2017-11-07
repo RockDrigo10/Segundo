@@ -16,14 +16,10 @@ import retrofit2.http.GET;
 
 public class NetwrokCall {
 
-    public static final String BASE_SCHEMA_WND = "http";
-    public static final String BASE_URL = "http://www.reddit.com/";
-    public static final String PATH = "r/all/.json";
-    public static final String EXT_WND = ".json";
+    public static final String BASE_URL = "http://www.reddit.com/r/";
+    public static final String PATH = ".json";
 
-
-    public static  Retrofit restCall() {
-
+    public static  Retrofit restCall(String url) {
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -35,7 +31,7 @@ public class NetwrokCall {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .client(client)
-                .baseUrl(BASE_URL)
+                .baseUrl(BASE_URL + url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
@@ -43,8 +39,8 @@ public class NetwrokCall {
     }
 
 
-    public static Call<Example> getExampleCall() {
-        Retrofit retrofit = restCall();
+    public static Call<Example> getExampleCall(String category) {
+        Retrofit retrofit = restCall(category);
         RetrofitService retrofitService = retrofit.create(RetrofitService.class);
         return retrofitService.getRetrofitServiceData();
     }

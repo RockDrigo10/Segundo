@@ -1,7 +1,5 @@
 package com.example.segundoauqui.rocksaucechallenge.view.mainactivity;
 
-import android.content.Context;
-
 import com.example.segundoauqui.rocksaucechallenge.model.Child;
 import com.example.segundoauqui.rocksaucechallenge.model.Example;
 
@@ -20,11 +18,7 @@ import retrofit2.Response;
 
 public class MainActivityPresenter implements MainActivityContract.Presenter {
 
-
-
-
     private MainActivityContract.View view;
-    private Context context;
 
     @Override
     public void attachView(MainActivityContract.View view) {
@@ -39,8 +33,8 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
 
     @Override
-    public void restCall() {
-        final retrofit2.Call<Example> getAllPost = NetwrokCall.getExampleCall();
+    public void restCall(String category) {
+        final retrofit2.Call<Example> getAllPost = NetwrokCall.getExampleCall(category);
         getAllPost.enqueue(new retrofit2.Callback<Example>() {
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
